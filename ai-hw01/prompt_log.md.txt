@@ -1,0 +1,36 @@
+# AI交互日志
+## 1. 生成核心代码
+Prompt：
+"用Python实现八皇后问题的回溯求解器，要求：
+1. 输入棋盘大小N，输出所有合法解
+2. 解用列表表示，索引代表行，值代表列
+3. 包含一个函数solve(n)返回所有解
+4. 加详细注释"
+
+AI回复：
+```python
+def solve(n):
+    solutions = []
+    board = [-1] * n  # 初始化棋盘，board[row] = col
+
+    def is_valid(row, col):
+        """检查当前位置(row, col)是否合法（无冲突）"""
+        for r in range(row):
+            # 检查列冲突 或 对角线冲突
+            if board[r] == col or abs(r - row) == abs(board[r] - col):
+                return False
+        return True
+
+    def backtrack(row):
+        """回溯核心逻辑"""
+        if row == n:  # 所有行都放好皇后，记录解
+            solutions.append(board.copy())
+            return
+        for col in range(n):  # 遍历当前行的所有列
+            if is_valid(row, col):
+                board[row] = col  # 放置皇后
+                backtrack(row + 1)  # 递归处理下一行
+                board[row] = -1  # 回溯，移除皇后
+
+    backtrack(0)  # 从第0行开始
+    return solutions

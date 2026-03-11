@@ -1,0 +1,26 @@
+import pytest
+from src.eight_queens import solve
+
+def test_4_queens():
+    """测试4皇后解数量"""
+    solutions = solve(4)
+    assert len(solutions) == 2  # 4皇后固定2个解
+
+def test_8_queens():
+    """测试8皇后解数量"""
+    solutions = solve(8)
+    assert len(solutions) == 92  # 8皇后固定92个解
+
+def test_solution_validity():
+    """测试所有解的合法性（无冲突）"""
+    solutions = solve(4)
+    for sol in solutions:
+        n = len(sol)
+        for i in range(n):
+            for j in range(i+1, n):
+                # 不同列 + 不同对角线
+                assert sol[i] != sol[j]
+                assert abs(i-j) != abs(sol[i]-sol[j])
+
+if __name__ == "__main__":
+    pytest.main(["-v"])
